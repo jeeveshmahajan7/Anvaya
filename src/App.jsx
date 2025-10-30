@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AnvayaProvider } from "./context/AnvayaContext";
 
 import "./App.css";
-import Sidebar from "./components/sidebar";
+import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
 import Leads from "./pages/Leads";
 import Agents from "./pages/Agents";
