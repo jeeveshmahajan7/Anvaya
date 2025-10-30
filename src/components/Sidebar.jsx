@@ -15,7 +15,7 @@ const Sidebar = () => {
         <div className="sidebar-main-navigation">
           <Link to="/">
             <img
-              src="/src/images/logos/Anvaya Logo.png"
+              src="public/images/logos/Anvaya Logo.png"
               alt="Anvaya Logo Image"
               className="anvaya-logo"
             />
