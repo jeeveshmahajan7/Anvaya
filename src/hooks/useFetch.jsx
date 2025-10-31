@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 
-const useFetch = async (apiUrl, options = {}) => {
+const useFetch = (apiUrl) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(loading);
+      setLoading(true);
       try {
         const response = await fetch(apiUrl);
         if (!response.ok) {
@@ -23,7 +23,7 @@ const useFetch = async (apiUrl, options = {}) => {
     };
 
     fetchData();
-  }, [apiUrl, options]);
+  }, [apiUrl]);
 
   return { data, loading, error };
 };
