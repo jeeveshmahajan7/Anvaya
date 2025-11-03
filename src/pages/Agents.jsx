@@ -1,10 +1,17 @@
+import { useEffect } from "react";
 import AgentForm from "../components/AgentForm";
 import useAnvayaContext from "../context/AnvayaContext";
 import useFetch from "../hooks/useFetch";
 
 const Agents = () => {
-  const { openFormModal, API } = useAnvayaContext();
+  const { openFormModal, API, setSalesAgentsList } = useAnvayaContext();
   const { data, loading, error } = useFetch(`${API}/agents`);
+
+  useEffect(() => {
+    if (data?.agents) {
+      setSalesAgentsList(data.agents);
+    }
+  }, [data]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>An error occured!</p>;

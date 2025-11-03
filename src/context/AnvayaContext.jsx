@@ -9,6 +9,7 @@ export const AnvayaProvider = ({ children }) => {
   const API = "https://anvaya-backend-rust.vercel.app";
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [isLeadModalOpen, setIsLeadModalOpen] = useState(false);
+  const [salesAgentsList, setSalesAgentsList] = useState({});
 
   const openFormModal = () => setIsFormModalOpen(true);
   const closeFormModal = () => setIsFormModalOpen(false);
@@ -22,6 +23,8 @@ export const AnvayaProvider = ({ children }) => {
         API,
         isFormModalOpen,
         isLeadModalOpen,
+        salesAgentsList,
+        setSalesAgentsList,
         setIsFormModalOpen,
         setIsLeadModalOpen,
         openFormModal,
