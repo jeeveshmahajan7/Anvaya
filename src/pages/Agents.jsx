@@ -12,7 +12,7 @@ const Agents = () => {
   const salesAgentListing = data?.agents?.map((agent, index) => (
     <li key={index}>
       <p>
-        Agent: {agent.name} - {agent.email}
+        Agent: <strong>{agent.name}</strong> - {agent.email}
       </p>
     </li>
   ));
