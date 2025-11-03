@@ -4,19 +4,13 @@ import useAnvayaContext from "../context/AnvayaContext";
 import useFetch from "../hooks/useFetch";
 
 const Agents = () => {
-  const { openFormModal, API, setSalesAgentsList } = useAnvayaContext();
-  const { data, loading, error } = useFetch(`${API}/agents`);
+  const { openFormModal, loadingAgents, errorAgents, salesAgentsList } =
+    useAnvayaContext();
 
-  useEffect(() => {
-    if (data?.agents) {
-      setSalesAgentsList(data.agents);
-    }
-  }, [data]);
+  if (loadingAgents) return <p>Loading agents...</p>;
+  if (errorAgents) return <p>Error: {errorAgents}</p>;
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>An error occured!</p>;
-
-  const salesAgentListing = data?.agents?.map((agent, index) => (
+  const salesAgentListing = salesAgentsList?.map((agent, index) => (
     <li key={index}>
       <p>
         Agent: <strong>{agent.name}</strong> - {agent.email}

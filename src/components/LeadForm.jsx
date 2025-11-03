@@ -1,19 +1,20 @@
 import Select from "react-select";
+import { useState } from "react";
 
 import useAnvayaContext from "../context/AnvayaContext";
 import Modal from "../components/Modal";
-import { useState } from "react";
 
 const LeadForm = () => {
-  const { isLeadModalOpen, closeLeadModal } = useAnvayaContext();
+  const { isLeadModalOpen, closeLeadModal, salesAgentsList } =
+    useAnvayaContext();
 
   // creating multi-select dropdowns
   // for sales agent
-  const salesAgentOptions = [
-    { value: "A", label: "A" },
-    { value: "B", label: "B" },
-    { value: "add", label: "Add these.." },
-  ];
+  const salesAgentOptions = salesAgentsList?.map((agent) => ({
+    value: `${agent.name}`,
+    label: `${agent.name}`,
+  }));
+
   const [selectedAgents, setSelectedAgents] = useState([]);
   const handleSalesAgentChange = (selectedOptions) => {
     setSelectedAgents(selectedOptions);
@@ -21,9 +22,11 @@ const LeadForm = () => {
 
   // for tags
   const tagsOptions = [
-    { value: "A", label: "A" },
-    { value: "B", label: "B" },
-    { value: "add", label: "Add these.." },
+    { value: "High Value", label: "High Value" },
+    { value: "Follow-up", label: "Follow-up" },
+    { value: "High Interest", label: "High Interest" },
+    { value: "Needs Approval", label: "Needs Approval" },
+    { value: "Uninterested", label: "Uninterested" },
   ];
   const [selectedTags, setSelectedTags] = useState([]);
   const handleTagsChange = (selectedOptions) => {
