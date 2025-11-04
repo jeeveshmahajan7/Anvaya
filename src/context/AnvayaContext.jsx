@@ -6,7 +6,7 @@ const useAnvayaContext = () => useContext(AnvayaContext);
 export default useAnvayaContext;
 
 export const AnvayaProvider = ({ children }) => {
-  const API = "https://anvaya-backend-rust.vercel.app";
+  const API = "https://anvaya-backend-six.vercel.app";
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [isLeadModalOpen, setIsLeadModalOpen] = useState(false);
   const [salesAgentsList, setSalesAgentsList] = useState([]);
