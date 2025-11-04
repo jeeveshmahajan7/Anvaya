@@ -1,24 +1,32 @@
 import Select from "react-select";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import useAnvayaContext from "../context/AnvayaContext";
 import Modal from "../components/Modal";
 
 const LeadForm = () => {
-  const { isLeadModalOpen, closeLeadModal, salesAgentsList } =
+  const { API, isLeadModalOpen, closeLeadModal, salesAgentsList } =
     useAnvayaContext();
+  const [leadName, setLeadName] = useState("");
+  const [leadSource, setLeadSource] = useState("Website");
+  const [selectedAgent, setSelectedAgent] = useState(null);
+  const [leadStatus, setLeadStatus] = useState("New");
+  const [leadPriority, setLeadPriority] = useState("Medium");
+  const [timeToClose, setTimeToClose] = useState(1);
+  const [selectedTags, setSelectedTags] = useState([]);
 
   // creating multi-select dropdowns
   // for sales agent
   const salesAgentOptions = salesAgentsList?.map((agent) => ({
-    value: `${agent.name}`,
+    value: `${agent._id}`,
     label: `${agent.name}`,
   }));
 
-  const [selectedAgents, setSelectedAgents] = useState([]);
-  const handleSalesAgentChange = (selectedOptions) => {
-    setSelectedAgents(selectedOptions);
-  };
+  useEffect(() => {
+    if (!selectedAgent && salesAgentOptions?.length) {
+      setSelectedAgent(salesAgentOptions[0]);
+    }
+  }, [salesAgentOptions]);
 
   // for tags
   const tagsOptions = [
@@ -28,7 +36,6 @@ const LeadForm = () => {
     { value: "Needs Approval", label: "Needs Approval" },
     { value: "Uninterested", label: "Uninterested" },
   ];
-  const [selectedTags, setSelectedTags] = useState([]);
   const handleTagsChange = (selectedOptions) => {
     setSelectedTags(selectedOptions);
   };
@@ -36,8 +43,37 @@ const LeadForm = () => {
   // handle form submit
   const handleSubmit = (event) => {
     event.preventDefault();
-    // handle form submission logic here
-    console.log("Lead Form Submitted!");
+
+    const submitLead = async () => {
+      try {
+        const res = await fetch(`${API}/leads`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: leadName,
+            source: leadSource,
+            salesAgent: selectedAgent?.value || null,
+            status: leadStatus,
+            tags: selectedTags.map((tag) => tag.value),
+            timeToClose: Number(timeToClose),
+            priority: leadPriority,
+          }),
+        });
+
+        if (!res.ok) {
+          throw new Error("❗️ Error creating the lead.");
+        }
+
+        const data = await res.json();
+        console.log("✅ Lead created Successfully!", data);
+      } catch (error) {
+        throw new Error(`❌ Failed to submit lead: ${error.message}`);
+      }
+    };
+
+    submitLead();
     closeLeadModal();
   };
 
@@ -50,13 +86,24 @@ const LeadForm = () => {
             <label htmlFor="leadName" className="form-label">
               Lead Name:
             </label>
-            <input id="leadName" type="text" className="form-control" />
+            <input
+              id="leadName"
+              type="text"
+              className="form-control"
+              value={leadName}
+              onChange={(e) => setLeadName(e.target.value)}
+            />
           </div>
           <div>
             <label htmlFor="leadSource" className="form-label">
               Lead Source:
             </label>
-            <select id="leadSource" className="form-select">
+            <select
+              id="leadSource"
+              className="form-select"
+              value={leadSource}
+              onChange={(e) => setLeadSource(e.target.value)}
+            >
               <option value="Website">Website</option>
               <option value="Referral">Referral</option>
               <option value="Cold Call">Cold Call</option>
@@ -71,11 +118,10 @@ const LeadForm = () => {
             </label>
             <Select
               id="salesAgent"
-              isMulti // to enable multi-selection
               options={salesAgentOptions}
-              onChange={handleSalesAgentChange}
-              value={selectedAgents}
-              placeholder="Select Sales Agents.."
+              onChange={(event) => setSelectedAgent(event)} // in case of the Select react-select, the event itself is the value
+              value={selectedAgent}
+              placeholder="Select Sales Agent.."
               className="form-select-like"
             />
           </div>
@@ -83,7 +129,12 @@ const LeadForm = () => {
             <label htmlFor="leadStatus" className="form-label">
               Lead Status:
             </label>
-            <select id="leadStatus" className="form-select">
+            <select
+              id="leadStatus"
+              className="form-select"
+              value={leadStatus}
+              onChange={(e) => setLeadStatus(e.target.value)}
+            >
               <option value="New">New</option>
               <option value="Contacted">Contacted</option>
               <option value="Qualified">Qualified</option>
@@ -95,7 +146,12 @@ const LeadForm = () => {
             <label htmlFor="priority" className="form-label">
               Priority:
             </label>
-            <select id="priority" className="form-select">
+            <select
+              id="priority"
+              className="form-select"
+              value={leadPriority}
+              onChange={(e) => setLeadPriority(e.target.value)}
+            >
               <option value="High">High</option>
               <option value="Medium">Medium</option>
               <option value="Low">Low</option>
@@ -109,6 +165,8 @@ const LeadForm = () => {
               type="number"
               placeholder="Input No. of Days"
               className="form-control"
+              value={timeToClose}
+              onChange={(e) => setTimeToClose(e.target.value)}
             />
           </div>
           <div>
