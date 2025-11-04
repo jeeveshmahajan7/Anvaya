@@ -2,19 +2,19 @@ import useAnvayaContext from "../context/AnvayaContext";
 import LeadForm from "../components/LeadForm";
 
 const Dashboard = () => {
-  const { openLeadModal } = useAnvayaContext();
+  const { openLeadModal, leadsList } = useAnvayaContext();
+
+  const leadsListing = leadsList?.map((lead) => (
+    <li key={lead._id} className="lead-list-item">
+      <strong>{lead.name}</strong>
+    </li>
+  ));
 
   return (
     <>
       <h1>Anvaya CRM Dashboard</h1>
 
-      <ul className="lead-list">
-        <li className="lead-list-item">Lead 1</li>
-        <li className="lead-list-item">Lead 2</li>
-        <li className="lead-list-item">Lead 3</li>
-        <li className="lead-list-item">Lead 4</li>
-        <li className="lead-list-item">Lead 5</li>
-      </ul>
+      <ul className="lead-list">{leadsListing}</ul>
 
       <div>
         <h2>Lead Status</h2>
