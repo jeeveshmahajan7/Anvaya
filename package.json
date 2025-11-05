@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "node index.js",
+    "postinstall": "npm rebuild esbuild || true"
   },
   "dependencies": {
     "node": "^25.1.0",
