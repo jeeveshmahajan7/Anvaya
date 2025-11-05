@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import useAnvayaContext from "../context/AnvayaContext";
 import LeadForm from "../components/LeadForm";
 
@@ -6,7 +8,9 @@ const Dashboard = () => {
 
   const leadsListing = leadsList?.map((lead) => (
     <li key={lead._id} className="lead-list-item">
-      <strong>{lead.name}</strong>
+      <Link to={`/lead/${lead._id}`}>
+        <strong>{lead.name}</strong>
+      </Link>
     </li>
   ));
 

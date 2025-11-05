@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import Leads from "./pages/Leads";
 import Agents from "./pages/Agents";
 import Reports from "./pages/Reports";
+import LeadDetails from "./pages/LeadDetails";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
                 <Route path="/leads" element={<Leads />} />
                 <Route path="/agents" element={<Agents />} />
                 <Route path="/reports" element={<Reports />} />
+                <Route path="/lead/:leadId" element={<LeadDetails />} />
               </Routes>
             </div>
           </div>
