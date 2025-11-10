@@ -306,3 +306,16 @@ button:focus-visible {
 .form-submit {
   margin-top: 1rem;
 }
+
+/* comment */
+.comment {
+  margin: 1rem 0rem;
+}
+
+.comment-section {
+  margin: 3rem 0rem;
+}
+
+.add-comment-header {
+  margin: 0rem;
+}
