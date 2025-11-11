@@ -73,10 +73,10 @@ const LeadDetails = () => {
               <strong>Lead Source:</strong> {selectedLead?.source}
             </li>
             <li className="lead-list-item">
-              <strong>Lead Status:</strong> {selectedLead?.priority}
+              <strong>Lead Status:</strong> {selectedLead?.status}
             </li>
             <li className="lead-list-item">
-              <strong>Priority:</strong> {selectedLead?.status}
+              <strong>Priority:</strong> {selectedLead?.priority}
             </li>
             <li className="lead-list-item">
               <strong>Time to Close:</strong> {selectedLead?.timeToClose} days
