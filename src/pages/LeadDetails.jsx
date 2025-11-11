@@ -3,13 +3,19 @@ import { useParams } from "react-router-dom";
 import useAnvayaContext from "../context/AnvayaContext";
 import useFetch from "../hooks/useFetch";
 import CommentBox from "../components/CommentBox";
+import { useState } from "react";
 
 const LeadDetails = () => {
   const { leadId } = useParams();
   const { leadsList, API } = useAnvayaContext();
 
+  const [refreshComments, setRefreshComments] = useState(false); // state to toggle refresh comments
+
   const selectedLead = leadsList?.find((lead) => lead._id === leadId);
-  const { data, loading, error } = useFetch(`${API}/leads/${leadId}/comments`);
+  const { data, loading, error } = useFetch(
+    `${API}/leads/${leadId}/comments`,
+    [refreshComments] // refreshComments passed down as dependency to trigger useFetch
+  );
 
   const commentsListing = data?.comments.map((comment) => (
     <li className="lead-list-item comment" key={comment._id}>
@@ -61,7 +67,10 @@ const LeadDetails = () => {
         )}
       </div>
 
-      <CommentBox leadId={leadId} />
+      <CommentBox
+        leadId={leadId}
+        onCommentAdded={() => setRefreshComments((prev) => !prev)} // function to toggle refresh comments passed down as prop
+      />
     </>
   );
 };

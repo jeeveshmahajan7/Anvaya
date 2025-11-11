@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import useAnvayaContext from "../context/AnvayaContext";
 
-const CommentBox = ({leadId}) => {
+const CommentBox = ({leadId, onCommentAdded}) => {
   const [commentText, setCommentText] = useState("");
   const [commentAuthor, setCommentAuthor] = useState(null);
   const { salesAgentsList, API } = useAnvayaContext();
@@ -35,6 +35,13 @@ const CommentBox = ({leadId}) => {
 
         const data = await res.json();
         console.log("✅ Comment added successfully:", data);
+
+        // refresh form fields
+        setCommentText("");
+        setCommentAuthor(null);
+
+        // trigger parent (LeadDetails) to refresh comments
+        onCommentAdded();
       } catch (error) {
         throw new Error(`❌ Failed to add comment: ${error.message}`);
       }
