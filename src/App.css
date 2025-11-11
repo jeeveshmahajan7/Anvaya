@@ -328,3 +328,9 @@ button:focus-visible {
   background-color: white;
   margin-bottom: 10rem;
 }
+
+@media (max-width: 768px) {
+  .comment-box {
+    width: 100%;
+  }
+}
