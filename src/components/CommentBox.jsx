@@ -63,7 +63,7 @@ const CommentBox = ({leadId, onCommentAdded}) => {
               id="commentText"
               type="text"
               placeholder="Type comment here..."
-              className="form-control"
+              className="form-control commentText-input"
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
             />

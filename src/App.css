@@ -316,6 +316,10 @@ button:focus-visible {
   margin: 3rem 0rem;
 }
 
+.commentText-input {
+  border-radius: 0.25rem;
+}
+
 .add-comment-header {
   margin: 0rem;
 }
