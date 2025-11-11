@@ -99,36 +99,38 @@ const LeadDetails = () => {
         )}
       </div>
 
-      <h2 className="add-comment-header">Add a Comment:</h2>
-      <form onSubmit={handleCommentSubmit}>
-        <div>
-          <label className="form-label" htmlFor="commentText">
-            Comment:
-          </label>
-          <input
-            id="commentText"
-            type="text"
-            placeholder="Type comment here..."
-            className="form-control"
-            value={commentText}
-            onChange={(e) => setCommentText(e.target.value)}
-          />
-        </div>
-        <div>
-          <label className="form-label" htmlFor="author">
-            Author:
-          </label>
-          <Select
-            id="author"
-            options={authorOptions}
-            placeholder="Select your name.."
-            className="form-select-like"
-            value={commentAuthor}
-            onChange={(e) => setCommentAuthor(e)} // in case of Select, the e itself is the value
-          />
-        </div>
-        <button className="btn btn-primary form-submit">Submit</button>
-      </form>
+      <div className="comment-box">
+        <h2 className="add-comment-header">Add a Comment:</h2>
+        <form onSubmit={handleCommentSubmit}>
+          <div>
+            <label className="form-label" htmlFor="commentText">
+              Comment:
+            </label>
+            <input
+              id="commentText"
+              type="text"
+              placeholder="Type comment here..."
+              className="form-control"
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="form-label" htmlFor="author">
+              Author:
+            </label>
+            <Select
+              id="author"
+              options={authorOptions}
+              placeholder="Select your name.."
+              className="form-select-like"
+              value={commentAuthor}
+              onChange={(e) => setCommentAuthor(e)} // in case of Select, the e itself is the value
+            />
+          </div>
+          <button className="btn btn-primary form-submit">Submit</button>
+        </form>
+      </div>
     </>
   );
 };
