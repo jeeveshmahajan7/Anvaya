@@ -6,6 +6,14 @@ import LeadForm from "../components/LeadForm";
 const Dashboard = () => {
   const { openLeadModal, leadsList } = useAnvayaContext();
 
+  const newLeads = leadsList.filter((lead) => lead.status === "New");
+  const contactedLeads = leadsList.filter(
+    (lead) => lead.status === "Contacted"
+  );
+  const qualifiedLeads = leadsList.filter(
+    (lead) => lead.status === "Qualified"
+  );
+
   const leadsListing = leadsList?.map((lead) => (
     <li key={lead._id} className="lead-list-item">
       <Link to={`/lead/${lead._id}`}>
@@ -23,9 +31,13 @@ const Dashboard = () => {
       <div>
         <h2>Lead Status</h2>
         <ul className="lead-list">
-          <li className="lead-list-item">New: 5 Leads</li>
-          <li className="lead-list-item">Contacted: 3 Leads</li>
-          <li className="lead-list-item">Qualified: 2 Leads</li>
+          <li className="lead-list-item">New: {newLeads.length} Leads</li>
+          <li className="lead-list-item">
+            Contacted: {contactedLeads.length} Leads
+          </li>
+          <li className="lead-list-item">
+            Qualified: {qualifiedLeads.length} Leads
+          </li>
         </ul>
       </div>
 
