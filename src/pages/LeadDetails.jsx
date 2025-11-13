@@ -4,10 +4,11 @@ import useAnvayaContext from "../context/AnvayaContext";
 import useFetch from "../hooks/useFetch";
 import CommentBox from "../components/CommentBox";
 import { useState } from "react";
+import LeadForm from "../components/LeadForm";
 
 const LeadDetails = () => {
   const { leadId } = useParams();
-  const { leadsList, API } = useAnvayaContext();
+  const { leadsList, API, openLeadModal } = useAnvayaContext();
 
   const [refreshComments, setRefreshComments] = useState(false); // state to toggle refresh comments
 
@@ -50,7 +51,9 @@ const LeadDetails = () => {
               <strong>Time to Close:</strong> {selectedLead?.timeToClose} days
             </li>
           </ul>
-          <button className="btn btn-primary">Edit Lead Details</button>
+          <button className="btn btn-primary" onClick={openLeadModal}>Edit Lead Details</button>
+
+          <LeadForm leadId={selectedLead._id} leadDetails={selectedLead} />
         </>
       ) : (
         <p>Loading Lead Details...</p>

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import useAnvayaContext from "../context/AnvayaContext";
 import Modal from "../components/Modal";
 
-const LeadForm = () => {
+const LeadForm = ({ leadId, leadDetails }) => {
   const { API, isLeadModalOpen, closeLeadModal, salesAgentsList, onLeadAdded } =
     useAnvayaContext();
   const [leadName, setLeadName] = useState("");
@@ -40,14 +40,38 @@ const LeadForm = () => {
     setSelectedTags(selectedOptions);
   };
 
+  // Pre-fill form fields if leadId is present (opening LeadForm in editing mode)
+  useEffect(() => {
+    if (leadDetails) {
+      setLeadName(leadDetails?.name || "");
+      setLeadSource(leadDetails?.source || "Website");
+      setSelectedAgent(
+        leadDetails?.salesAgent
+          ? {
+              value: leadDetails.salesAgent._id,
+              label: leadDetails.salesAgent.name,
+            }
+          : null
+      );
+      setLeadStatus(leadDetails?.status || "New");
+      setLeadPriority(leadDetails?.priority || "Medium");
+      setTimeToClose(leadDetails?.timeToClose || 1);
+      setSelectedTags(
+        leadDetails?.tags?.map((tag) => ({ value: tag, label: tag }))
+      ) || [];
+    }
+  }, [leadDetails]);
+
   // handle form submit
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    const url = leadDetails ? `${API}/leads/${leadId}` : `${API}/leads`;
+
     const submitLead = async () => {
       try {
-        const res = await fetch(`${API}/leads`, {
-          method: "POST",
+        const res = await fetch(url, {
+          method: leadDetails ? "PUT" : "POST",
           headers: {
             "Content-Type": "application/json",
           },
@@ -83,7 +107,7 @@ const LeadForm = () => {
   return (
     <>
       <Modal isOpen={isLeadModalOpen} onClose={closeLeadModal}>
-        <h2>Add New Lead</h2>
+        <h2>{leadDetails ? "Edit Lead Details" : "Add New Lead"}</h2>
         <form onSubmit={handleSubmit}>
           <div>
             <label htmlFor="leadName" className="form-label">
@@ -187,7 +211,9 @@ const LeadForm = () => {
             />
           </div>
 
-          <button className="btn btn-primary form-submit">Add Lead</button>
+          <button className="btn btn-primary form-submit">
+            {leadDetails ? "Update Lead" : "Add Lead"}
+          </button>
         </form>
       </Modal>
     </>
