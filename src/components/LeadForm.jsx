@@ -5,7 +5,7 @@ import useAnvayaContext from "../context/AnvayaContext";
 import Modal from "../components/Modal";
 
 const LeadForm = () => {
-  const { API, isLeadModalOpen, closeLeadModal, salesAgentsList } =
+  const { API, isLeadModalOpen, closeLeadModal, salesAgentsList, onLeadAdded } =
     useAnvayaContext();
   const [leadName, setLeadName] = useState("");
   const [leadSource, setLeadSource] = useState("Website");
@@ -68,6 +68,9 @@ const LeadForm = () => {
 
         const data = await res.json();
         console.log("✅ Lead created Successfully!", data);
+
+        // refresh leads
+        onLeadAdded();
       } catch (error) {
         throw new Error(`❌ Failed to submit lead: ${error.message}`);
       }
