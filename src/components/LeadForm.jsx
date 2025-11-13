@@ -91,12 +91,17 @@ const LeadForm = ({ leadId, leadDetails }) => {
         }
 
         const data = await res.json();
-        console.log("✅ Lead created Successfully!", data);
+        console.log(
+          `✅ Lead ${leadDetails ? "updated" : "created"} successfully!`
+        );
 
         // refresh leads
         onLeadAdded();
       } catch (error) {
-        throw new Error(`❌ Failed to submit lead: ${error.message}`);
+        console.error(
+          `❌ Failed to ${leadDetails ? "update" : "create"} lead:`,
+          error
+        );
       }
     };
 
