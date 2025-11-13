@@ -3,7 +3,8 @@ import useAnvayaContext from "../context/AnvayaContext";
 import { useState } from "react";
 
 const AgentForm = () => {
-  const { isFormModalOpen, closeFormModal, API } = useAnvayaContext();
+  const { isFormModalOpen, closeFormModal, API, onAgentAdded } =
+    useAnvayaContext();
   const [newAgentName, setNewAgentName] = useState("");
   const [newAgentEmail, setNewAgentEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -37,6 +38,9 @@ const AgentForm = () => {
       // clear input fields
       setNewAgentName("");
       setNewAgentEmail("");
+
+      // trigger to refresh agents
+      onAgentAdded();
     } catch (error) {
       console.error("❌ Error adding Agent:", error.message);
       setError(error.message);
