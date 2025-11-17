@@ -338,3 +338,15 @@ button:focus-visible {
     width: 100%;
   }
 }
+
+/* Chart */
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  min-width: 320px;
+  height: 60vh;
+  max-height: 500px;
+  margin: 2rem auto;
+}
