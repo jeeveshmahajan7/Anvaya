@@ -1,10 +1,17 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 import useAnvayaContext from "../context/AnvayaContext";
 import LeadForm from "../components/LeadForm";
 
 const Dashboard = () => {
-  const { openLeadModal, leadsList } = useAnvayaContext();
+  const { openLeadModal, leadsList, loadingLeads, errorLeads } =
+    useAnvayaContext();
+  const [leadsToRender, setLeadsToRender] = useState();
+
+  useEffect(() => {
+    setLeadsToRender(leadsList);
+  }, [leadsList]);
 
   const newLeads = leadsList.filter((lead) => lead.status === "New");
   const contactedLeads = leadsList.filter(
@@ -14,7 +21,7 @@ const Dashboard = () => {
     (lead) => lead.status === "Qualified"
   );
 
-  const leadsListing = leadsList?.map((lead) => (
+  const leadsListing = leadsToRender?.map((lead) => (
     <li key={lead._id} className="lead-list-item">
       <Link to={`/lead/${lead._id}`}>
         <strong>{lead.name}</strong>
@@ -22,12 +29,28 @@ const Dashboard = () => {
     </li>
   ));
 
+  const filterLeads = (statusValue) => {
+    const filteredLeads = leadsList.filter(
+      (lead) => lead.status === statusValue
+    );
+
+    setLeadsToRender(filteredLeads);
+  };
+
+  const clearFilters = () => {
+    setLeadsToRender(leadsList);
+  };
+
+  if (loadingLeads || !leadsToRender) return <p>Loading leads...</p>;
+  if (errorLeads) return <p>Leads not found.</p>;
+
   return (
     <>
       <h1>Anvaya CRM Dashboard</h1>
 
-      <ul className="lead-list">{leadsListing}</ul>
-
+      <ul className="lead-list">
+        {leadsListing}
+      </ul>
       <div>
         <h2>Lead Status</h2>
         <ul className="lead-list">
@@ -40,12 +63,35 @@ const Dashboard = () => {
           </li>
         </ul>
       </div>
-
       <div>
-        <p>
-          Quick Filters: <button className="filter filter-new">New</button>{" "}
-          <button className="filter filter-contacted">Contacted</button>
-        </p>
+        <div>
+          Quick Filters:{" "}
+          <div className="row">
+            <div className="col">
+              <button
+                className="filter filter-new"
+                onClick={() => filterLeads("New")}
+              >
+                New
+              </button>{" "}
+              <button
+                className="filter filter-contacted"
+                onClick={() => filterLeads("Contacted")}
+              >
+                Contacted
+              </button>
+            </div>
+            <div className="col">
+              <button
+                className="filter filter-clear"
+                onClick={() => clearFilters()}
+              >
+                Clear Filters
+              </button>
+            </div>
+          </div>
+        </div>
+
         <button className="btn btn-primary" onClick={openLeadModal}>
           Add New Lead
         </button>
