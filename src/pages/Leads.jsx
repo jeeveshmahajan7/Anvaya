@@ -71,19 +71,20 @@ const Leads = () => {
     setLeadsToRender(sorted); // updated state to trigger re-render
   };
 
-  if (loadingLeads || !leadsToRender) return <p>Loading leads...</p>;
-  if (errorLeads) return <p>Leads not found.</p>;
-
   return (
     <>
       <h1>Lead List</h1>
 
       <h2>Lead Overview</h2>
       <ul className="lead-list">
-        {leadsToRender?.length > 0 ? (
+        {loadingLeads ? (
+          <li>Loading leads...</li>
+        ) : errorLeads ? (
+          <li>No leads found!</li>
+        ) : leadsListing?.length > 0 ? (
           leadsListing
         ) : (
-          <p>No leads match the selected filters.</p>
+          <li>No leads found for selected filters.</li>
         )}
       </ul>
 

@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AnvayaProvider } from "./context/AnvayaContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import "./App.css";
 import Sidebar from "./components/Sidebar";
@@ -34,6 +36,7 @@ function App() {
           </div>
         </Router>
       </AnvayaProvider>
+      <ToastContainer position="top-right" autoClose={2000} />
     </>
   );
 }

@@ -1,5 +1,6 @@
 import Select from "react-select";
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
 import useAnvayaContext from "../context/AnvayaContext";
 import Modal from "../components/Modal";
@@ -14,6 +15,8 @@ const LeadForm = ({ leadId, leadDetails }) => {
   const [leadPriority, setLeadPriority] = useState("Medium");
   const [timeToClose, setTimeToClose] = useState(1);
   const [selectedTags, setSelectedTags] = useState([]);
+  //loading state to disable add lead button while submitting
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // creating multi-select dropdowns
   // for sales agent
@@ -69,6 +72,8 @@ const LeadForm = ({ leadId, leadDetails }) => {
     const url = leadDetails ? `${API}/leads/${leadId}` : `${API}/leads`;
 
     const submitLead = async () => {
+      setIsSubmitting(true); // start loading
+
       try {
         const res = await fetch(url, {
           method: leadDetails ? "PUT" : "POST",
@@ -87,26 +92,38 @@ const LeadForm = ({ leadId, leadDetails }) => {
         });
 
         if (!res.ok) {
-          throw new Error("❗️ Error creating the lead.");
+          toast.error(
+            `Error ${leadDetails ? "updating" : "creating"} the lead!`
+          );
+          return;
         }
 
         const data = await res.json();
-        console.log(
-          `✅ Lead ${leadDetails ? "updated" : "created"} successfully!`
+
+        toast.success(
+          `Lead ${leadDetails ? "updated" : "created"} successfully!`
         );
 
+        // reset form fields after successful submit
+        setLeadName("");
+        setLeadSource("Website");
+        setSelectedAgent(salesAgentOptions?.[0] || null);
+        setLeadStatus("New");
+        setLeadPriority("Medium");
+        setTimeToClose(1);
+        setSelectedTags([]);
         // refresh leads
         onLeadAdded();
+        // close modal
+        closeLeadModal();
       } catch (error) {
-        console.error(
-          `❌ Failed to ${leadDetails ? "update" : "create"} lead:`,
-          error
-        );
+        toast.error(`Failed to ${leadDetails ? "update" : "create"} lead!`);
+      } finally {
+        setIsSubmitting(false); // End Loading
       }
     };
 
     submitLead();
-    closeLeadModal();
   };
 
   return (
@@ -216,8 +233,19 @@ const LeadForm = ({ leadId, leadDetails }) => {
             />
           </div>
 
-          <button className="btn btn-primary form-submit">
-            {leadDetails ? "Update Lead" : "Add Lead"}
+          <button
+            className="btn btn-primary form-submit"
+            disabled={isSubmitting} // button disabled while submitting
+          >
+            {isSubmitting ? (
+              <>
+                <span className="spinner"></span> Saving...
+              </>
+            ) : leadDetails ? (
+              "Update Lead"
+            ) : (
+              "Add Lead"
+            )}
           </button>
         </form>
       </Modal>

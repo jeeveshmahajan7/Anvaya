@@ -41,15 +41,20 @@ const Dashboard = () => {
     setLeadsToRender(leadsList);
   };
 
-  if (loadingLeads || !leadsToRender) return <p>Loading leads...</p>;
-  if (errorLeads) return <p>Leads not found.</p>;
-
   return (
     <>
       <h1>Anvaya CRM Dashboard</h1>
 
       <ul className="lead-list">
-        {leadsListing}
+        {loadingLeads ? (
+          <li>Loading leads...</li>
+        ) : errorLeads ? (
+          <li>No leads found!</li>
+        ) : leadsListing?.length > 0 ? (
+          leadsListing
+        ) : (
+          <li>No leads found for selected filters.</li>
+        )}
       </ul>
       <div>
         <h2>Lead Status</h2>

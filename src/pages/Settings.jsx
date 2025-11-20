@@ -1,6 +1,7 @@
 import { useState } from "react";
 import useAnvayaContext from "../context/AnvayaContext";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Settings = () => {
   const {
@@ -13,23 +14,30 @@ const Settings = () => {
     API,
     setRefreshLeads,
   } = useAnvayaContext();
+  // state to manage loading state
+  const [isDeleting, setIsDeleting] = useState("");
 
   const deleteLead = async (leadId) => {
+    setIsDeleting(leadId); // start loading
     try {
       const res = await fetch(`${API}/leads/${leadId}`, {
         method: "DELETE",
       });
 
       if (!res.ok) {
-        throw new Error("❌ Failed to delete the lead.");
+        toast.error("Failed to delete the lead!");
+        return;
       }
 
       const result = await res.json();
-      console.log(result);
 
-      setRefreshLeads(prev => !prev);
+      toast.success("Successfully deleted the lead!");
+
+      setRefreshLeads((prev) => !prev);
     } catch (error) {
-      console.error(error);
+      toast.error("Failed to delete the lead!");
+    } finally {
+      setIsDeleting("");
     }
   };
 
@@ -44,10 +52,17 @@ const Settings = () => {
         </div>
         <div className="col">
           <button
-            className="btn btn-danger"
+            className="btn btn-danger delete-lead-btn"
             onClick={() => deleteLead(lead._id)}
+            disabled={isDeleting === lead._id}
           >
-            Delete
+            {isDeleting === lead._id ? (
+              <>
+                <span className="spinner"></span> Loading...
+              </>
+            ) : (
+              "Delete"
+            )}
           </button>
         </div>
       </div>
@@ -62,17 +77,18 @@ const Settings = () => {
     </li>
   ));
 
-  if (loadingLeads || loadingAgents) return <p>Loading...</p>;
-  if (errorLeads || errorAgents) return <p>Error loading data.</p>;
-
   return (
     <>
       <h1>Settings</h1>
       <h2>Leads List</h2>
-      <ul className="lead-list">{leadsListing}</ul>
+      <ul className="lead-list">
+        {loadingAgents ? <li>Loading leads..</li> : leadsListing}
+      </ul>
 
       <h2>Agents List</h2>
-      <ul className="lead-list">{salesAgentListing}</ul>
+      <ul className="lead-list">
+        {loadingAgents ? <li>Loading agents...</li> : salesAgentListing}
+      </ul>
     </>
   );
 };

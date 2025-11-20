@@ -1,6 +1,7 @@
 import Modal from "./Modal";
 import useAnvayaContext from "../context/AnvayaContext";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 const AgentForm = () => {
   const { isFormModalOpen, closeFormModal, API, onAgentAdded } =
@@ -8,12 +9,10 @@ const AgentForm = () => {
   const [newAgentName, setNewAgentName] = useState("");
   const [newAgentEmail, setNewAgentEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    setError(null);
 
     const newAgentData = { name: newAgentName, email: newAgentEmail };
 
@@ -21,16 +20,18 @@ const AgentForm = () => {
       const response = await fetch(`${API}/agents`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/JSON",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(newAgentData),
       });
 
-      if (!response.ok)
-        throw new Error(`HTTP error! Status: ${response.status}`);
+      if (!response.ok) {
+        toast.error("Error adding agent!");
+        return;
+      }
 
       const result = await response.json();
-      console.log("✅ Agent added successfully:", result);
+      toast.success("Agent added successfully!");
 
       // close form modal on success
       closeFormModal();
@@ -42,8 +43,7 @@ const AgentForm = () => {
       // trigger to refresh agents
       onAgentAdded();
     } catch (error) {
-      console.error("❌ Error adding Agent:", error.message);
-      setError(error.message);
+      toast.error("Error adding Agent!");
     } finally {
       setLoading(false);
     }
@@ -85,7 +85,6 @@ const AgentForm = () => {
           >
             {loading ? "Adding..." : "Add Agent"}
           </button>
-          {error && <p className="text-danger">Error: {error}</p>}
         </form>
       </Modal>
     </>
