@@ -46,6 +46,29 @@ const Leads = () => {
 
   const clearFilters = () => {
     setLeadsToRender(leadsList);
+    setAgentFilter("All");
+    setStatusFilter("All");
+  };
+
+  const sortLeads = (sortValue) => {
+    if (!leadsToRender) return;
+
+    let sorted = [...leadsToRender];
+
+    if (sortValue === "priority") {
+      const priorityOrder = { High: 1, Medium: 2, Low: 3 };
+      sorted.sort(
+        (a, b) =>
+          (priorityOrder[a.priority] || 999) -
+          (priorityOrder[b.priority] || 999)
+      );
+    }
+
+    if (sortValue === "timeToClose") {
+      sorted.sort((a, b) => a.timeToClose - b.timeToClose);
+    }
+
+    setLeadsToRender(sorted); // updated state to trigger re-render
   };
 
   if (loadingLeads || !leadsToRender) return <p>Loading leads...</p>;
@@ -77,6 +100,7 @@ const Leads = () => {
                   onChange={(e) => setStatusFilter(e.target.value)}
                   id="statusFilter"
                   className="form-select"
+                  value={statusFilter}
                 >
                   <option value="All">All</option>
                   <option value="New">New</option>
@@ -95,6 +119,7 @@ const Leads = () => {
                   onChange={(e) => setAgentFilter(e.target.value)}
                   id="agentFilter"
                   className="form-select"
+                  value={agentFilter}
                 >
                   <option key="All" value="All">
                     All
@@ -122,8 +147,18 @@ const Leads = () => {
           Sort By:
           <div className="row">
             <div className="col">
-              <button className="sort sort-priority">Priority</button>
-              <button className="sort sort-close">Time to Close</button>
+              <button
+                className="sort sort-priority"
+                onClick={() => sortLeads("priority")}
+              >
+                Priority
+              </button>
+              <button
+                className="sort sort-close"
+                onClick={() => sortLeads("timeToClose")}
+              >
+                Time to Close
+              </button>
             </div>
           </div>
         </div>
