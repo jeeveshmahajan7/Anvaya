@@ -31,12 +31,18 @@ const Sidebar = () => {
                     <span>Leads</span>
                   </Link>
                 </li>
-                <li className="sidebar-list-item">
-                  <Link className="sidebar-text" to="#">
-                    <PiCurrencyInrLight className="sidebar-logo" />
-                    <span>Sales</span>
+
+                <li className="sidebar-list-item sub-item">
+                  <Link className="sidebar-text" to="/leads/status">
+                    <span>• By Status</span>
                   </Link>
                 </li>
+                <li className="sidebar-list-item sub-item">
+                  <Link className="sidebar-text" to="/leads/agents">
+                    <span>• By Agents</span>
+                  </Link>
+                </li>
+
                 <li className="sidebar-list-item">
                   <Link className="sidebar-text" to="/agents">
                     <SlPeople className="sidebar-logo" />
@@ -50,7 +56,7 @@ const Sidebar = () => {
                   </Link>
                 </li>
                 <li className="sidebar-list-item">
-                  <Link className="sidebar-text" to="#">
+                  <Link className="sidebar-text" to="/settings">
                     <SlSettings className="sidebar-logo" />
                     <span>Settings</span>
                   </Link>
