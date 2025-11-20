@@ -8,6 +8,9 @@ import Leads from "./pages/Leads";
 import Agents from "./pages/Agents";
 import Reports from "./pages/Reports";
 import LeadDetails from "./pages/LeadDetails";
+import LeadsByStatus from "./pages/LeadsByStatus";
+import LeadsByAgents from "./pages/LeadsByAgents";
+import Settings from "./pages/Settings";
 
 function App() {
   return (
@@ -23,6 +26,9 @@ function App() {
                 <Route path="/agents" element={<Agents />} />
                 <Route path="/reports" element={<Reports />} />
                 <Route path="/lead/:leadId" element={<LeadDetails />} />
+                <Route path="/leads/status" element={<LeadsByStatus />} />
+                <Route path="/leads/agents" element={<LeadsByAgents />} />
+                <Route path="/settings" element={<Settings />} />
               </Routes>
             </div>
           </div>
