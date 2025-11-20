@@ -68,6 +68,7 @@ export const AnvayaProvider = ({ children }) => {
         leadsList,
         loadingLeads,
         errorLeads,
+        setRefreshLeads,
         onAgentAdded,
         onLeadAdded,
         setSalesAgentsList,
