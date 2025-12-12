@@ -38,7 +38,7 @@ npm run dev
 ## Demo Video
 
 Watch a walkthrough (3 minutes) of all the major features of this app:<br>
-[Drive Link]()
+[Drive Link](https://drive.google.com/file/d/1SEnG7YM3gB6HD97lb9q_zeVrWn0fvlqd/view?usp=drive_link)
 
 ---
 
